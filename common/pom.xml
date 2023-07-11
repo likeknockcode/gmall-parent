@@ -60,6 +60,10 @@
             <artifactId>spring-cloud-starter-openfeign</artifactId>
             <scope>provided </scope>
         </dependency>
-
+        <dependency>
+            <groupId>io.minio</groupId>
+            <artifactId>minio</artifactId>
+            <version>7.1.0</version>
+        </dependency>
     </dependencies>
 </project>

@@ -13,4 +13,7 @@ import com.baomidou.mybatisplus.extension.service.IService;
 public interface BaseTrademarkService extends IService<BaseTrademark> {
 
     public abstract Page findTradeMarkByPage(Integer page, Integer limit);
+
+    public abstract void deleteById(Long id);
+
 }

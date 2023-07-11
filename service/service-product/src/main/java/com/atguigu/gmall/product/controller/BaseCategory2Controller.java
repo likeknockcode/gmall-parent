@@ -21,7 +21,7 @@ public class BaseCategory2Controller {
      * @description: 获取二级列表
      * @author: scv
      * @date: 2023/7/11 18:10
-     * @param: c2Id
+     * @param: c1Id
      * @return: Result<List<BaseCategory2>>
      **/
     @GetMapping("getCategory2/{category1Id}")

@@ -21,7 +21,7 @@ public class BaseCategory3Controller {
      * @description: 获取三级列表
      * @author: scv
      * @date: 2023/7/11 18:11
-     * @param: c3Id
+     * @param: c2Id
      * @return: Result<List<BaseCategory3>>
      **/
     @GetMapping("getCategory3/{category2Id}")

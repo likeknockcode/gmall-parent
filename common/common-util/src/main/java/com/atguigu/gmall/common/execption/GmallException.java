@@ -11,7 +11,7 @@ import lombok.Data;
 @Data
 @ApiModel(value = "自定义全局异常类")
 public class GmallException extends RuntimeException {
-
+    private ResultCodeEnum resultCodeEnum;
     @ApiModelProperty(value = "异常状态码")
     private Integer code;
 
@@ -32,6 +32,7 @@ public class GmallException extends RuntimeException {
     public GmallException(ResultCodeEnum resultCodeEnum) {
         super(resultCodeEnum.getMessage());
         this.code = resultCodeEnum.getCode();
+        this.resultCodeEnum = resultCodeEnum;
     }
 
     @Override

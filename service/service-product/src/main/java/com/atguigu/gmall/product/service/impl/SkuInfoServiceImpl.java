@@ -14,7 +14,7 @@ import org.springframework.stereotype.Service;
 */
 @Service
 public class SkuInfoServiceImpl extends ServiceImpl<SkuInfoMapper, SkuInfo>
-    implements SkuInfoService{
+    implements SkuInfoService {
 
 }
 

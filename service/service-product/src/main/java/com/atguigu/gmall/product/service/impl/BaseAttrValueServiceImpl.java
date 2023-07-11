@@ -14,7 +14,7 @@ import org.springframework.stereotype.Service;
 */
 @Service
 public class BaseAttrValueServiceImpl extends ServiceImpl<BaseAttrValueMapper, BaseAttrValue>
-    implements BaseAttrValueService{
+    implements BaseAttrValueService {
 
 }
 

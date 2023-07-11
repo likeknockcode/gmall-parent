@@ -28,7 +28,9 @@ public enum ResultCodeEnum {
     SECKILL_ORDER_SUCCESS(218, "下单成功"),
     COUPON_GET(220, "优惠券已经领取"),
     COUPON_LIMIT_GET(221, "优惠券已发放完毕"),
-    ;
+    SPU_ERROR(301, "存在spu引用，删除失败"),
+    SKU_ERROR(302, "存在sku引用，删除失败"),
+    SYSTEM_ERROR(303, "网络异常");
 
     private Integer code;
 

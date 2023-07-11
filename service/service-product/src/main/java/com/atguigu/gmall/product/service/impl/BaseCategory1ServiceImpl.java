@@ -14,7 +14,7 @@ import java.util.List;
 * @createDate 2023-07-10 21:27:14
 */
 @Service
-public class BaseCategory1ServiceImpl extends ServiceImpl<BaseCategory1Mapper, BaseCategory1> implements BaseCategory1Service{
+public class BaseCategory1ServiceImpl extends ServiceImpl<BaseCategory1Mapper, BaseCategory1> implements BaseCategory1Service {
 
     @Override
     public List<BaseCategory1> findByBaseCategory1() {

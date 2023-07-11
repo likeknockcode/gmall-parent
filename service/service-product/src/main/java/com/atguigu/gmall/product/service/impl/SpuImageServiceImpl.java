@@ -14,7 +14,7 @@ import org.springframework.stereotype.Service;
 */
 @Service
 public class SpuImageServiceImpl extends ServiceImpl<SpuImageMapper, SpuImage>
-    implements SpuImageService{
+    implements SpuImageService {
 
 }
 
