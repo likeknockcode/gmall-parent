@@ -18,9 +18,13 @@ public class BaseTradeMarkController {
     private BaseTrademarkService baseTrademarkService;
 
     /**
-     * 获取品牌分页列表
-     * @return
-     */
+     * @description: 获取品牌列表
+     * @author: yanhongwei
+     * @date: 2023/7/11 18:17
+     * @param: page
+     * @param: limit
+     * @return: com.atguigu.gmall.common.result.Result<com.baomidou.mybatisplus.extension.plugins.pagination.Page>
+     **/
     @GetMapping("{page}/{limit}")
     public Result<Page> findTradeMarkByPage(@PathVariable("page") Integer page,@PathVariable("limit") Integer limit){
         Page page1 = baseTrademarkService.findTradeMarkByPage(page,limit);

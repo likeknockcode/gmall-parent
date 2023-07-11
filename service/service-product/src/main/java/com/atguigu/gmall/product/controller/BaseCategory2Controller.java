@@ -17,9 +17,16 @@ import java.util.List;
 public class BaseCategory2Controller {
     @Autowired
     private BaseCategory2Service baseCategory2Service;
+    /**
+     * @description: 获取二级列表
+     * @author: scv
+     * @date: 2023/7/11 18:10
+     * @param: c2Id
+     * @return: Result<List<BaseCategory2>>
+     **/
     @GetMapping("getCategory2/{category1Id}")
-    public Result<List<BaseCategory2>> findByBaseCategory2(@PathVariable("category1Id") Long c2Id){
-        List<BaseCategory2> baseCategory2List = baseCategory2Service.findByBaseCategory2(c2Id);
+    public Result<List<BaseCategory2>> findByBaseCategory2(@PathVariable("category1Id") Long c1Id){
+        List<BaseCategory2> baseCategory2List = baseCategory2Service.findByBaseCategory2(c1Id);
         return Result.build(baseCategory2List, ResultCodeEnum.SUCCESS);
     }
 }

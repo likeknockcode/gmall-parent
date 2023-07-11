@@ -17,10 +17,16 @@ import java.util.List;
 public class BaseCategory3Controller {
     @Autowired
     private BaseCategory3Service baseCategory3Service;
-
+    /**
+     * @description: 获取三级列表
+     * @author: scv
+     * @date: 2023/7/11 18:11
+     * @param: c3Id
+     * @return: Result<List<BaseCategory3>>
+     **/
     @GetMapping("getCategory3/{category2Id}")
-    public Result<List<BaseCategory3>> findByBaseCategory3(@PathVariable("category2Id") Long c3Id){
-        List<BaseCategory3> baseCategory3List = baseCategory3Service.findByBaseCategory3(c3Id);
+    public Result<List<BaseCategory3>> findByBaseCategory3(@PathVariable("category2Id") Long c2Id){
+        List<BaseCategory3> baseCategory3List = baseCategory3Service.findByBaseCategory3(c2Id);
         return Result.build(baseCategory3List, ResultCodeEnum.SUCCESS);
     }
 }
