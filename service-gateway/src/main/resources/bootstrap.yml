@@ -1,0 +1,6 @@
+spring:
+  application:
+    name: servcie-gateway
+  cloud:
+    nacos:
+      server-addr: 192.168.206.120:8848

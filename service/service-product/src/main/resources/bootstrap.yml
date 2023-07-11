@@ -1,0 +1,7 @@
+# 配置nacos注册中心和配置中心地址
+spring:
+  application:
+    name: service-product
+  cloud:
+    nacos:
+      server-addr: 192.168.206.120:8848
