@@ -9,10 +9,31 @@
             <result property="attrName" column="attr_name" jdbcType="VARCHAR"/>
             <result property="categoryId" column="category_id" jdbcType="BIGINT"/>
             <result property="categoryLevel" column="category_level" jdbcType="INTEGER"/>
+            <collection property="attrValueList" ofType="com.atguigu.gmall.product.entity.BaseAttrValue">
+            <id property="id" column="vid"></id>
+                        <result property="valueName" column="value_name"></result>
+                        <result property="attrId" column="attr_id"></result>
+            </collection>
     </resultMap>
 
     <sql id="Base_Column_List">
         id,attr_name,category_id,
         category_level
     </sql>
+    <select id="findAttrInfoList" resultMap="BaseResultMap">
+        select bai.id ,bai.attr_name , bai.category_id , bai.category_level,
+               bav.id vid , bav.value_name , bav.attr_id
+        from base_attr_info bai LEFT JOIN base_attr_value bav on bai.id = bav.attr_id
+        <where>
+            <if test="c1Id != 0">
+                ( category_id = #{c1Id} and category_level = 1 )
+            </if>
+            <if test="c2Id != 0">
+                or ( category_id = #{c2Id} and category_level = 2 )
+            </if>
+            <if test="c3Id != 0">
+                or ( category_id = #{c3Id} and category_level = 3 )
+            </if>
+        </where>
+    </select>
 </mapper>
