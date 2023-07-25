@@ -2,7 +2,10 @@ package com.atguigu.gmall.product.service;
 
 
 import com.atguigu.gmall.product.entity.SkuAttrValue;
+import com.atguigu.gmall.product.vo.AttrValueConcat;
 import com.baomidou.mybatisplus.extension.service.IService;
+
+import java.util.List;
 
 /**
 * @author Light of hope
@@ -11,4 +14,5 @@ import com.baomidou.mybatisplus.extension.service.IService;
 */
 public interface SkuAttrValueService extends IService<SkuAttrValue> {
 
+    public abstract List<AttrValueConcat> findAttrValueConcatBySkuId(Long skuId);
 }

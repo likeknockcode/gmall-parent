@@ -14,6 +14,11 @@
     <url>http://maven.apache.org</url>
     <modules>
         <module>service-product</module>
+        <module>web-all</module>
+        <module>service-item</module>
+        <module>service-canal</module>
+        <module>service-search</module>
+        <module>service-user</module>
     </modules>
 
     <properties>
@@ -89,6 +94,10 @@
             <groupId>org.springframework.cloud</groupId>
             <artifactId>spring-cloud-starter-zipkin</artifactId>
         </dependency>
-
+        <dependency>
+            <groupId>de.codecentric</groupId>
+            <artifactId>spring-boot-admin-starter-client</artifactId>
+            <version>2.3.1</version>
+        </dependency>
     </dependencies>
 </project>

@@ -30,7 +30,9 @@ public enum ResultCodeEnum {
     COUPON_LIMIT_GET(221, "优惠券已发放完毕"),
     SPU_ERROR(301, "存在spu引用，删除失败"),
     SKU_ERROR(302, "存在sku引用，删除失败"),
-    SYSTEM_ERROR(303, "网络异常");
+    SYSTEM_ERROR(303, "网络异常"),
+    REDIS_ATTACK_ERROR(401, "请通过正常途径访问"),
+    LOGIN_ERROR(402,"用户名或密码错误！！" );
 
     private Integer code;
 

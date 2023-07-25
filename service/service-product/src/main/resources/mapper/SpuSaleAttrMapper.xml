@@ -29,4 +29,25 @@
         WHERE ssa.spu_id = #{spuId};
 
     </select>
+    <resultMap id="SPU_SALE_ATTR_AND_VALUE_ISCHECKED" type="com.atguigu.gmall.product.entity.SpuSaleAttr" autoMapping="true">
+        <id column="id" property="id"></id>
+        <collection property="spuSaleAttrValueList" ofType="com.atguigu.gmall.product.entity.SpuSaleAttrValue" autoMapping="true">
+            <id column="ssavId" property="id"></id>
+        </collection>
+    </resultMap>
+    <select id="findSpuSalAttrAndValueBySkuId" resultMap="SPU_SALE_ATTR_AND_VALUE_ISCHECKED">
+        SELECT temp.*,
+               CASE WHEN sav.sale_attr_value_id IS NULL THEN '0' ELSE '1' END AS isChecked
+        FROM (
+                 SELECT ssa.*,
+                        ssav.id AS ssavId,
+                        ssav.sale_attr_value_name
+                 FROM spu_sale_attr ssa
+                          LEFT JOIN spu_sale_attr_value ssav ON ssav.spu_id = ssa.spu_id AND ssav.base_sale_attr_id = ssa.base_sale_attr_id
+                          JOIN sku_info si ON ssa.spu_id = si.spu_id
+                 WHERE si.id = 46
+             ) temp
+                 LEFT JOIN sku_sale_attr_value sav ON sav.sale_attr_value_id = temp.ssavId AND sav.sku_id = 46
+        ORDER BY temp.base_sale_attr_id, temp.ssavId;
+    </select>
 </mapper>

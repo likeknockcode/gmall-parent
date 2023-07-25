@@ -1,0 +1,16 @@
+# 配置服务端口号
+server:
+  port: 10500
+# 日志配置
+logging:
+  file:
+    name: D://gmall/logs/service-search/info.log
+  level:
+    tracer: trace
+    com.atguigu.gmall.search.service: trace
+    org.springframework.data.elasticsearch: trace
+spring:
+  # es配置
+  elasticsearch:
+    rest:
+      uris: http://192.168.206.120:9200

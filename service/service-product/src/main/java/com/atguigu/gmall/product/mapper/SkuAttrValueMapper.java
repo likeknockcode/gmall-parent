@@ -2,7 +2,11 @@ package com.atguigu.gmall.product.mapper;
 
 
 import com.atguigu.gmall.product.entity.SkuAttrValue;
+import com.atguigu.gmall.search.SearchAttr;
+import com.atguigu.gmall.product.vo.AttrValueConcat;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+
+import java.util.List;
 
 /**
 * @author Light of hope
@@ -11,6 +15,10 @@ import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 * @Entity com.atguigu.gmall.product.entity.SkuAttrValue
 */
 public interface SkuAttrValueMapper extends BaseMapper<SkuAttrValue> {
+
+    public abstract List<AttrValueConcat> findAttrValueConcatBySkuId(Long skuId);
+
+    public abstract List<SearchAttr> getSkuAttrAndValueBySkuId(Long skuId);
 
 }
 

@@ -15,4 +15,24 @@
         id,attr_id,value_id,
         sku_id
     </sql>
+    <select id="findAttrValueConcatBySkuId" resultType="com.atguigu.gmall.product.vo.AttrValueConcat">
+        SELECT temp.sku_id AS skuId,
+               GROUP_CONCAT(temp.sale_attr_value_id SEPARATOR '|') AS attrValueConcat
+        FROM (
+                 SELECT ssav.sku_id, ssav.sale_attr_value_id
+                 FROM sku_sale_attr_value ssav
+                          JOIN sku_info si ON ssav.spu_id = si.spu_id
+                 WHERE si.id = #{skuId}
+                 ORDER BY ssav.sale_attr_value_id, ssav.id
+             ) temp
+        GROUP BY temp.sku_id;
+    </select>
+    <select id="getSkuAttrAndValueBySkuId" resultType="com.atguigu.gmall.search.SearchAttr">
+        SELECT bai.id attrId , bai.attr_name attrName , bav.value_name  attrValue
+        FROM sku_attr_value sav
+        LEFT JOIN base_attr_info bai on bai.id = sav.attr_id
+        LEFT JOIN base_attr_value  bav on bav.id = sav.value_id
+        WHERE sku_id = #{skuId}
+
+    </select>
 </mapper>

@@ -3,6 +3,7 @@ package com.atguigu.gmall.product.mapper;
 
 import com.atguigu.gmall.product.entity.SpuSaleAttr;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import org.mapstruct.Mapper;
 
 import java.util.List;
 
@@ -12,9 +13,13 @@ import java.util.List;
 * @createDate 2023-07-10 21:27:14
 * @Entity com.atguigu.gmall.product.entity.SpuSaleAttr
 */
+
 public interface SpuSaleAttrMapper extends BaseMapper<SpuSaleAttr> {
 
     public abstract List<SpuSaleAttr> findSaleAttrListBySpuId(Long spuId);
+
+    public  abstract List<SpuSaleAttr> findSpuSalAttrAndValueBySkuId(Long skuId);
+
 }
 
 

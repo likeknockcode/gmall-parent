@@ -1,0 +1,49 @@
+# 配置服务端口号
+server:
+  port: 10600
+# 数据库地址信息配置
+spring:
+  datasource:
+    driver-class-name: com.mysql.jdbc.Driver
+    url: jdbc:mysql://192.168.206.120:3306/gmall_user?useSSL=false&characterEncoding=UTF8
+    username: root
+    password: root
+    type: com.zaxxer.hikari.HikariDataSource
+  sleuth:
+    sampler:
+      probability: 1 # 配置采样率
+  #配置redis
+  redis:
+    host: 192.168.206.120
+    port: 6379
+    password: 1234
+  main:
+    allow-bean-definition-overriding: true
+# mybatis plus相关配置
+mybatis-plus:
+  mapper-locations: classpath:/mapper/*.xml
+  type-aliases-package: com.atguigu.gmall.product.entity
+  configuration:
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+# 线程池配置
+  threadpool:
+    corePoolSize: 4
+    maximumPoolSize: 10
+    keepAliveTime: 300
+    workQueueSize: 60
+feign:
+  client:
+    config:
+      default:
+        connect-timeout: 1000
+        read-timeout: 1000
+  sentinel:
+    enabled: true
+
+logging:
+  file:
+    name: D://gmall/logs/service-user/info.log
+
+
+
+

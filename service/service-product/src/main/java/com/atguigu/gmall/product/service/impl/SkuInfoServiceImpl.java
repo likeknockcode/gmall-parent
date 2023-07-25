@@ -1,24 +1,31 @@
 package com.atguigu.gmall.product.service.impl;
 
 
+import com.atguigu.gmall.common.feign.search.GoodsFeignClient;
 import com.atguigu.gmall.product.dto.SkuInfoDto;
-import com.atguigu.gmall.product.entity.SkuAttrValue;
-import com.atguigu.gmall.product.entity.SkuImage;
-import com.atguigu.gmall.product.entity.SkuInfo;
-import com.atguigu.gmall.product.entity.SkuSaleAttrValue;
+import com.atguigu.gmall.product.entity.*;
+import com.atguigu.gmall.product.mapper.BaseCategory1Mapper;
+import com.atguigu.gmall.product.mapper.BaseTrademarkMapper;
+import com.atguigu.gmall.product.mapper.SkuAttrValueMapper;
+import com.atguigu.gmall.search.Goods;
+import com.atguigu.gmall.search.SearchAttr;
 import com.atguigu.gmall.product.service.SkuAttrValueService;
 import com.atguigu.gmall.product.service.SkuImageService;
 import com.atguigu.gmall.product.service.SkuInfoService;
 import com.atguigu.gmall.product.mapper.SkuInfoMapper;
 import com.atguigu.gmall.product.service.SkuSaleAttrValueService;
-import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.atguigu.gmall.product.vo.CategoryView;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
+import java.util.Date;
 import java.util.List;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ThreadPoolExecutor;
 import java.util.stream.Collectors;
 
 /**
@@ -36,6 +43,21 @@ public class SkuInfoServiceImpl extends ServiceImpl<SkuInfoMapper, SkuInfo> impl
 
     @Autowired
     private SkuSaleAttrValueService skuSaleAttrValueService;
+
+    @Autowired
+    private ThreadPoolExecutor threadPoolExecutor;
+    @Autowired
+    private BaseTrademarkMapper baseTrademarkMapper;
+    @Autowired
+    private BaseCategory1Mapper baseCategory1Mapper;
+    @Autowired
+    private SkuAttrValueMapper skuAttrValueMapper;
+    @Autowired
+    private SkuInfoMapper skuInfoMapper;
+
+    @Autowired
+    private GoodsFeignClient goodsFeignClient;
+
     @Override
     public Page findBySkuPage(Integer pageNum, Integer pageSize) {
         Page page = new Page<>(pageNum, pageSize);
@@ -78,6 +100,9 @@ public class SkuInfoServiceImpl extends ServiceImpl<SkuInfoMapper, SkuInfo> impl
         skuInfo.setId(skuId);
         skuInfo.setIsSale(1);
         this.updateById(skuInfo);
+
+        Goods goods = buildGoods(skuId);
+        goodsFeignClient.saveGoods(goods);
     }
 
     @Override
@@ -86,6 +111,58 @@ public class SkuInfoServiceImpl extends ServiceImpl<SkuInfoMapper, SkuInfo> impl
         skuInfo.setId(skuId);
         skuInfo.setIsSale(0);
         this.updateById(skuInfo);
+        goodsFeignClient.deleteById(skuId);
+    }
+
+    //构建Es数据模型对象
+    public Goods buildGoods(Long skuId){
+        //创建goods对象
+        Goods goods = new Goods();
+
+        //查询sku对象
+        SkuInfo skuInfo = skuInfoMapper.selectById(skuId);
+
+        //封装数据
+        CompletableFuture<Void> baseInfoCf = CompletableFuture.runAsync(() -> {
+            goods.setId(skuId);
+            goods.setDefaultImg(skuInfo.getSkuDefaultImg());
+            goods.setTitle(skuInfo.getSkuName());
+            goods.setPrice(new BigDecimal(skuInfo.getPrice()));
+            goods.setCreateTime(new Date());
+        }, threadPoolExecutor);
+
+        //封装品牌数据
+        CompletableFuture<Void> trademarkCf = CompletableFuture.runAsync(() -> {
+            BaseTrademark baseTrademark = baseTrademarkMapper.selectById(skuInfo.getTmId());
+            goods.setTmId(baseTrademark.getId());
+            goods.setTmName(baseTrademark.getTmName());
+            goods.setTmLogoUrl(baseTrademark.getLogoUrl());
+        }, threadPoolExecutor);
+
+        //三级分类数据
+        CompletableFuture<Void> categoryViewCf = CompletableFuture.runAsync(() -> {
+            CategoryView categoryView = baseCategory1Mapper.findCategoryBySkuId(skuId);
+            goods.setCategory1Id(categoryView.getCategory1Id());
+            goods.setCategory1Name(categoryView.getCategory1Name());
+            goods.setCategory2Id(categoryView.getCategory2Id());
+            goods.setCategory2Name(categoryView.getCategory2Name());
+            goods.setCategory3Id(categoryView.getCategory3Id());
+            goods.setCategory3Name(categoryView.getCategory3Name());
+        }, threadPoolExecutor);
+        //设置热点分数
+        goods.setHotScore(0L);
+
+        //设置平台属性
+
+        CompletableFuture<Void> searchAttrCf = CompletableFuture.runAsync(() -> {
+            List<SearchAttr> searchAttrs = skuAttrValueMapper.getSkuAttrAndValueBySkuId(skuId);
+            goods.setAttrs(searchAttrs);
+        }, threadPoolExecutor);
+
+        //等到所有线程执行完毕
+        CompletableFuture.allOf(baseInfoCf,trademarkCf,categoryViewCf,searchAttrCf).join();
+        return goods;
+
     }
 }
 

@@ -1,0 +1,28 @@
+# 配置服务端口号
+server:
+  port: 20100
+spring:
+  mail:
+    host: smtp.163.com
+    port: 465
+    username: hqscv511@163.com
+    password: QDENMCFRPIRSUGVF
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:   # 使用 SSL 安全协议，须如下配置
+            enable: true
+            required: true
+    protocol: smtps   # 465端口使用的通讯协议为smtps
+  boot:
+    admin:
+      notify:
+        mail:
+          to: hqscv511@163.com
+          from: hqscv511@163.com
+          enabled: true
+        filter:
+          health-status: DOWN		# 邮件通知策略，当微服务下线的时候发送通知邮件
+      monitor:
+        default-timeout: 30000

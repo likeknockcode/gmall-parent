@@ -1,6 +1,7 @@
 package com.atguigu.gmall.product.service.impl;
 
 
+import com.atguigu.gmall.common.constant.GmallConstant;
 import com.atguigu.gmall.product.dto.SpuInfoDto;
 import com.atguigu.gmall.product.entity.SpuImage;
 import com.atguigu.gmall.product.entity.SpuInfo;
@@ -14,10 +15,14 @@ import com.atguigu.gmall.product.service.SpuSaleAttrValueService;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import lombok.extern.slf4j.Slf4j;
+import org.redisson.api.RBloomFilter;
+import org.redisson.api.RedissonClient;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.annotation.PostConstruct;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -27,6 +32,7 @@ import java.util.stream.Collectors;
 * @createDate 2023-07-10 21:27:14
 */
 @Service
+@Slf4j
 public class SpuInfoServiceImpl extends ServiceImpl<SpuInfoMapper, SpuInfo> implements SpuInfoService {
     @Autowired
     private SpuImageService spuImageService;
@@ -35,6 +41,8 @@ public class SpuInfoServiceImpl extends ServiceImpl<SpuInfoMapper, SpuInfo> impl
     private SpuSaleAttrService spuSaleAttrService;
     @Autowired
     private SpuSaleAttrValueService spuSaleAttrValueService;
+
+
     @Override
     public Page findSpuInfoList(Integer pageNum, Integer pageSize, Long c3Id) {
         Page page = new Page(pageNum,pageSize);

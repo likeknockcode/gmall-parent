@@ -19,7 +19,6 @@ public class MinioConfigration {
     @Autowired
     private MiniProperties miniProperties;
 
-
     @Bean
     public MinioClient createMinioClient(){
         MinioClient minioClient = MinioClient.builder().endpoint(miniProperties.getEndpoint())
